@@ -1,0 +1,11 @@
+[domotics]
+id = 62
+hostname = "pilight:8080"
+
+[pwm]
+period=600
+
+[pid]
+target=8.2
+p=3
+i=0.05
