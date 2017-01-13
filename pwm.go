@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"sync"
 	"time"
 )
@@ -24,6 +25,7 @@ func NewPwm(s Switch) *Pwm {
 }
 
 func (p *Pwm) SetPeriod(period time.Duration) {
+	log.Println("Setting period: ", period)
 	p.period = period
 }
 
@@ -35,6 +37,9 @@ func (p *Pwm) SetDutyCycle(dc float64) {
 }
 
 func (p *Pwm) Start() {
+	if p.period == 0 {
+		log.Fatal("PWM period is not set")
+	}
 	go func() {
 		isRunning := true
 		p.stopWg.Add(1)
@@ -43,12 +48,18 @@ func (p *Pwm) Start() {
 		p.runLock.Unlock()
 		for isRunning {
 			onTime := float64(p.period.Nanoseconds()) * p.dutyCycle
-			p.sw.On()
-			time.Sleep(time.Duration(onTime))
+			if onTime > 0 {
+				p.sw.On()
+				log.Println("PWM: On time is ", time.Duration(onTime))
+				time.Sleep(time.Duration(onTime))
+			}
 
-			p.sw.Off()
 			offTime := p.period - time.Duration(onTime)
-			time.Sleep(offTime)
+			if offTime > 0 {
+				p.sw.Off()
+				log.Println("PWM: Off time is ", time.Duration(offTime))
+				time.Sleep(offTime)
+			}
 
 			p.runLock.RLock()
 			isRunning = p.running

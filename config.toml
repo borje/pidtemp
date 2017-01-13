@@ -3,9 +3,10 @@ id = 62
 hostname = "pilight:8080"
 
 [pwm]
-period=600
+period=60
 
 [pid]
-target=8.2
-p=3
+target=13.7
+p=30
 i=0.05
+#i=0
