@@ -76,7 +76,7 @@ func main() {
 	pid.Set(viper.GetFloat64("pid.target"))
 
 	// Initiate PWM
-	powerSwitch := &DomoSwitch{Host: "pilight:8080", Id: 9000}
+	powerSwitch := &DomoSwitch{Host: viper.GetString("domotics.hostname"), Id: 9000}
 	pwm = NewPwm(powerSwitch)
 	pwm.SetPeriod(time.Duration(viper.GetInt("pwm.period")) * time.Second)
 	_, temp := getTemp()
