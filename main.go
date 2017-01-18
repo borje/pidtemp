@@ -58,6 +58,17 @@ func readConfigFile() {
 var pid *pidctrl.PIDController
 var pwm *Pwm
 
+func roundOutput(output float64) float64 {
+	if output < 0.1 {
+		return 0
+	} else if output > 0.9 {
+		return 1
+	} else {
+		return output
+	}
+
+}
+
 func main() {
 	log.SetFlags(log.Lshortfile | log.Ldate | log.Ltime | log.Lmicroseconds)
 	f, err := os.OpenFile("pidtemp.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
@@ -95,7 +106,8 @@ func main() {
 		// largen the PWM period. multiply with 1.5 up to 30 minutes
 		// the error gets to large, go down to configures period.
 
-		pwm.SetDutyCycle(output)
+		roundedOutput := roundOutput(output)
+		pwm.SetDutyCycle(roundedOutput)
 		log.Println("PID output: ", output)
 		log.Println("Temperature is: ", temp)
 
