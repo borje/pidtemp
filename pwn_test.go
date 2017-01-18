@@ -39,3 +39,7 @@ func TestFoo(t *testing.T) {
 	fmt.Println("Total Time: ", duration.Nanoseconds())
 	fmt.Println("Ratio: ", ratio)
 }
+
+func TestPeriodChange() {
+	//change period during "on time" and the ratio will be errorneous
+}

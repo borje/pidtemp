@@ -47,14 +47,15 @@ func (p *Pwm) Start() {
 		p.running = isRunning
 		p.runLock.Unlock()
 		for isRunning {
-			onTime := float64(p.period.Nanoseconds()) * p.dutyCycle
+			period := p.period
+			onTime := float64(period.Nanoseconds()) * p.dutyCycle
 			if onTime > 0 {
 				p.sw.On()
 				log.Println("PWM: On time is ", time.Duration(onTime))
 				time.Sleep(time.Duration(onTime))
 			}
 
-			offTime := p.period - time.Duration(onTime)
+			offTime := period - time.Duration(onTime)
 			if offTime > 0 {
 				p.sw.Off()
 				log.Println("PWM: Off time is ", time.Duration(offTime))
