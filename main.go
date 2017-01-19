@@ -82,9 +82,8 @@ func main() {
 	readConfigFile()
 
 	// Initiate PID Controller
-	pid = pidctrl.NewPIDController(20, .05, 0)
+	pid = pidctrl.NewPIDController(viper.GetFloat64("pid.p"), viper.GetFloat64("pid.i"), viper.GetFloat64("pid.d"))
 	pid.SetOutputLimits(0, 100)
-	pid.SetPID(viper.GetFloat64("pid.p"), viper.GetFloat64("pid.i"), viper.GetFloat64("pid.d"))
 	pid.Set(viper.GetFloat64("pid.target"))
 
 	// Initiate PWM
