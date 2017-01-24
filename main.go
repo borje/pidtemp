@@ -107,8 +107,8 @@ func main() {
 
 		roundedOutput := roundOutput(output)
 		pwm.SetDutyCycle(roundedOutput)
-		log.Println("PID output: ", output)
 		log.Println("Temperature is: ", temp)
+		log.Println("PID output: ", output)
 
 		// This will get off sync from the PWM, so this could be a problem
 		//sleepTime := time.Second * 60)
