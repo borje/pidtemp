@@ -35,7 +35,6 @@ func (s *DomoSwitch) On() {
 		return
 	}
 	defer resp.Body.Close()
-	log.Println(resp.Status)
 
 	log.Println("Switch ON")
 }
@@ -48,7 +47,6 @@ func (s *DomoSwitch) Off() {
 		return
 	}
 	defer resp.Body.Close()
-	log.Println(resp.Status)
 
 	log.Println("Switch OFF")
 
