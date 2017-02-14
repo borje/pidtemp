@@ -90,15 +90,30 @@ func main() {
 	powerSwitch := &DomoSwitch{Host: viper.GetString("domotics.hostname"), Id: 9000}
 	pwm = NewPwm(powerSwitch)
 	pwm.SetPeriod(time.Duration(viper.GetInt("pwm.period")) * time.Second)
-	_, temp := getTemp()
+	var temp float64
+	err, temp = getTemp()
+	// Keep try until we get a temperature
+	for err != nil {
+		log.Println(err)
+		log.Println("Sleep and retry")
+		time.Sleep(time.Minute)
+		err, temp = getTemp()
+	}
+
 	pwm.SetDutyCycle(pid.Update(temp) / 100.0) // Set dutycycle for firsrt cycle
 	pwm.Start()
 	defer pwm.Stop()
 
 	for {
 
-		_, temp := getTemp()
-		// if cant get temperature, keep the same output
+		err, temp := getTemp()
+		// if cant get temperature, we should perhaps keep the same output
+		for err != nil {
+			log.Println(err)
+			log.Println("Sleep and retry")
+			time.Sleep(time.Minute)
+			err, temp = getTemp()
+		}
 
 		output := pid.Update(temp) / 100.0
 		// if the error is small and output is mostly constant,

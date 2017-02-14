@@ -69,7 +69,7 @@ func getTemp() (error, float64) {
 	resp, err := http.Get(u.String())
 	if err != nil {
 		log.Println(err)
-		return nil, 0
+		return err, 0
 	}
 	defer resp.Body.Close()
 	log.Println(resp.Status)
@@ -78,6 +78,7 @@ func getTemp() (error, float64) {
 	err = d.Decode(&tempData)
 	if err != nil {
 		log.Fatal(err)
+		return err, 0
 	}
 	if l := len(tempData.Result); l == 1 {
 		return nil, tempData.Result[0].Temp
