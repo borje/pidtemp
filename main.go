@@ -102,6 +102,7 @@ func main() {
 
 	pwm.SetDutyCycle(pid.Update(temp) / 100.0) // Set dutycycle for firsrt cycle
 	pwm.Start()
+	go initRest(pwm)
 	defer pwm.Stop()
 
 	for {
