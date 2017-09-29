@@ -74,7 +74,7 @@ func (p *Pwm) Start() {
 			select {
 			case <-cycleTick.C:
 				if p.period != period {
-					log.Println("New period")
+					log.Println("New period set in PWM")
 					period = p.period
 					cycleTick = time.NewTicker(period)
 				}
@@ -83,6 +83,7 @@ func (p *Pwm) Start() {
 				p.sw.Off()
 			case <-p.quit:
 				cycleTick.Stop()
+				// Decide if the status should be off or on
 				return
 
 			}
