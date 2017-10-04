@@ -1,4 +1,4 @@
-package pidtemp
+package main
 
 import (
 	"fmt"

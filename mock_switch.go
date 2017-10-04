@@ -2,7 +2,7 @@
 // Source: pwm.go
 
 // Package mock_main is a generated GoMock package.
-package pidtemp
+package main
 
 import (
 	reflect "reflect"
