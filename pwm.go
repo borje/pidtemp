@@ -73,6 +73,9 @@ func (p *Pwm) Start() {
 		for {
 			select {
 			case <-cycleTick.C:
+				if p.dutyCycle == 0 {
+					p.sw.Off()
+				}
 				if p.period != period {
 					log.Println("New period set in PWM")
 					period = p.period

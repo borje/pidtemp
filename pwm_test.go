@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"testing"
 	"time"
+
+	gomock "github.com/golang/mock/gomock"
 )
 
 type FakeSwitch struct {
@@ -65,4 +67,22 @@ func TestPeriodChange(t *testing.T) {
 	fmt.Println("Total Time: ", duration.Nanoseconds())
 	fmt.Println("Ratio: ", ratio)
 
+}
+
+func TestTurnOffAfterFullDutycycle(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockSw := NewMockSwitch(ctrl)
+	mockSw.EXPECT().Off()
+	mockSw.EXPECT().On()
+
+	pwm := NewPwm(mockSw)
+	pwm.SetPeriod(time.Second * 2)
+	pwm.SetDutyCycle(1)
+	pwm.Start()
+	time.Sleep(time.Second * 1)
+	pwm.SetDutyCycle(0.0)
+	time.Sleep(time.Second * 2)
+	pwm.Stop()
 }
