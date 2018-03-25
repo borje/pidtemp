@@ -21,7 +21,7 @@ func createSwitchCmd(cmd string) url.URL {
 	q := u.Query()
 	q.Set("type", "command")
 	q.Set("param", "switchlight")
-	q.Set("idx", "63")
+	q.Set("idx", "105")
 	q.Set("switchcmd", cmd)
 	u.RawQuery = q.Encode()
 	return u
