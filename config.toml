@@ -1,6 +1,7 @@
 [domotics]
 id = 62
 hostname = "pilight:8080"
+switchidx = 167
 
 [pwm]
 period=600

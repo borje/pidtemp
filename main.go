@@ -32,7 +32,10 @@ func readConfigFile() {
 	viper.WatchConfig()
 	viper.OnConfigChange(func(in fsnotify.Event) {
 		pid.Set(viper.GetFloat64("pid.target"))
-		pid.SetPID(viper.GetFloat64("pid.p"), viper.GetFloat64("pid.i"), viper.GetFloat64("pid.d"))
+		pid.SetPID(
+			viper.GetFloat64("pid.p"),
+			viper.GetFloat64("pid.i"),
+			viper.GetFloat64("pid.d"))
 		log.Printf("target=%g\tp=%g\ti=%g\td=%g\n", viper.GetFloat64("pid.target"), viper.GetFloat64("pid.p"), viper.GetFloat64("pid.i"), viper.GetFloat64("pid.d"))
 		pwm.SetPeriod(time.Duration(viper.GetInt("pwm.period")) * time.Second)
 		//duration, err := time.ParseDuration(viper.GetString("pwm.period"))
