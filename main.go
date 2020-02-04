@@ -96,6 +96,7 @@ func main() {
 	pwm.SetPeriod(time.Duration(viper.GetInt("pwm.period")) * time.Second)
 	var temp float64
 	err, temp = getTemp()
+	go initRest(pwm, pid)
 	// Keep try until we get a temperature
 	for err != nil {
 		log.Println(err)
@@ -106,7 +107,6 @@ func main() {
 
 	pwm.SetDutyCycle(pid.Update(temp) / 100.0) // Set dutycycle for firsrt cycle
 	pwm.Start()
-	go initRest(pwm, pid)
 	defer pwm.Stop()
 
 	for {
