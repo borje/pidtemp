@@ -1,0 +1,11 @@
+version: '3.3'
+services:
+    pidtemp:
+        build: ./
+        image: pidtemp
+        volumes:
+            - ./workdir:/app/workdir
+        ports:
+            - 8081:8081
+        #command: /bin/sleep 60 # For debugging
+        command: /go/bin/pidtemp
