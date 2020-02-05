@@ -10,10 +10,12 @@ RUN go get -d -v
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o pidtemp . 
 RUN ls -l
 
-FROM scratch
+FROM alpine
 
 COPY --from=builder /app/pidtemp /go/bin/pidtemp
 
-WORKDIR /app/config
 CMD ["/go/bin/pidtemp"] 
+
+# This dir needs to be mounted and contain a config.toml file.
+WORKDIR /app/workdir
 
